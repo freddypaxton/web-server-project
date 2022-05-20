@@ -16,7 +16,20 @@
       service:
         name: nginx
         state: started
+    
+    - name: Creates directory
+      file:
+        path: /home/ec2-user/git
+        state: directory
 
+    - name: Git init
+      command: git init /home/ec2-user/git
+
+    - name: Clone the code repository to the docroot.
+      git:
+        repo: https://github.com/freddypaxton/web-server-project.git
+        dest: /home/ec2-user/git/
+    
     - name: Creates directory
       file:
         path: /var/www/si-webserver
@@ -24,16 +37,16 @@
     
     - name: Copy index
       copy: 
-        src: ansible/index.html
+        src: /home/ec2-user/git/web-server-project/ansible/index.html
         dest: /var/www/si-webserver
 
     - name: Copy to config sites available
       copy:
-        src: ansible/static-site.cfg
+        src: /home/ec2-user/git/web-server-project/ansible/static-site.cfg
         dest: /etc/nginx/sites-available
 
     - name: Create symbolic link 
       file:
-        src: "/etc/nginx/sites-available/static-site.cfg"
-        path: "/etc/nginx/sites-enabled/static-site.cfg"
+        src: /etc/nginx/sites-available/static-site.cfg
+        path: /etc/nginx/sites-enabled/static-site.cfg
         state: link
