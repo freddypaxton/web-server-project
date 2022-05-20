@@ -1,3 +1,4 @@
 git:latest
 groovy:latest
 python:latest
+scm:latest
