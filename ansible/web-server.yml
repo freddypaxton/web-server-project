@@ -23,12 +23,15 @@
         state: directory
 
     - name: Git init
-      command: git init /home/ec2-user/git
+      command: git init
+      args:
+        chdir: /home/ec2-user/git
 
-    - name: Clone the code repository to the docroot.
+    - name: Clone the repository
       git:
         repo: https://github.com/freddypaxton/web-server-project.git
         dest: /home/ec2-user/git/
+        clone: yes
     
     - name: Creates directory
       file:
