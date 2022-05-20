@@ -1,0 +1,3 @@
+git:latest
+groovy:latest
+python:latest

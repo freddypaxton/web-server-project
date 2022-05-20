@@ -1,0 +1,39 @@
+---
+  - name: Web Server
+    hosts: 127.0.0.1
+    become: true
+
+    tasks:
+    - name: Enable nginx amazon linux extras
+      command: amazon-linux-extras enable nginx1
+
+    - name: Install nginx
+      yum:
+        name: nginx
+        state: present
+
+    - name: Start nginx
+      service:
+        name: nginx
+        state: started
+
+    - name: Creates directory
+      file:
+        path: /var/www/si-webserver
+        state: directory
+    
+    - name: Copy index
+      copy: 
+        src: ansible/index.html
+        dest: /var/www/si-webserver
+
+    - name: Copy to config sites available
+      copy:
+        src: ansible/static-site.cfg
+        dest: /etc/nginx/sites-available
+
+    - name: Create symbolic link 
+      file:
+        src: "/etc/nginx/sites-available/static-site.cfg"
+        path: "/etc/nginx/sites-enabled/static-site.cfg"
+        state: link
